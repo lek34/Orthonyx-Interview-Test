@@ -70,7 +70,7 @@ async def get_current_user(
     return user
 
 # Health check endpoint
-@app.get("/health")
+@app.get("/status")
 async def health_check():
     """Health check endpoint"""
     try:
@@ -79,16 +79,16 @@ async def health_check():
             result = await db.execute(select(1))
             result.scalar()
             break
-        db_status = "healthy"
+        db_status = "Success"
     except Exception as e:
         logger.error(f"Database health check failed: {e}")
-        db_status = "unhealthy"
+        db_status = "Failed"
     
     # Check OpenAI connection
-    openai_status = "healthy" if await openai_service.health_check() else "unhealthy"
+    openai_status = "Success" if await openai_service.health_check() else "Failed"
     
     return {
-        "status": "healthy" if db_status == "healthy" and openai_status == "healthy" else "unhealthy",
+        "status": "Success" if db_status == "Success" and openai_status == "Success" else "Failed",
         "database": db_status,
         "openai": openai_status,
         "timestamp": datetime.utcnow().isoformat()
