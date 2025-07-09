@@ -13,8 +13,6 @@ class OpenAIService:
         self.base_delay = 1  # seconds
 
     async def analyze_symptoms(self, symptom_data: SymptomCheckRequest) :
-        """Analyze symptoms using OpenAI GPT-4o"""
-        
         # Create the prompt for symptom analysis
         prompt = self._create_analysis_prompt(symptom_data)
         
@@ -59,7 +57,6 @@ class OpenAIService:
                     return self._get_fallback_response()
 
     def _create_analysis_prompt(self, symptom_data: SymptomCheckRequest) -> str:
-        """Create a structured prompt for symptom analysis"""
         prompt = f"""
         Please analyze the following patient symptoms:
 
@@ -83,7 +80,6 @@ class OpenAIService:
         return prompt
 
     def _get_fallback_response(self) -> str:
-        """Return a fallback response when OpenAI API fails"""
         return """I apologize, but I'm currently unable to analyze your symptoms due to a technical issue. 
 
         Please consider:
@@ -94,7 +90,6 @@ class OpenAIService:
         This is for informational purposes only and should not replace professional medical advice."""
 
     async def health_check(self) -> bool:
-        """Check if OpenAI API is accessible"""
         try:
             response = await self.client.chat.completions.create(
                 model="gpt-4o",

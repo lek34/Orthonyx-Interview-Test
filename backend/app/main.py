@@ -23,7 +23,6 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Lifespan context manager for startup and shutdown events"""
     # Startup
     try:
         await init_db()
@@ -72,7 +71,6 @@ async def get_current_user(
 # Health check endpoint
 @app.get("/status")
 async def health_check():
-    """Health check endpoint"""
     try:
         # Check database connection
         async for db in get_db():
@@ -97,7 +95,6 @@ async def health_check():
 # Authentication endpoints
 @app.post("/auth/signup", response_model=UserResponse)
 async def signup(user_data: UserSignup, db: AsyncSession = Depends(get_db)):
-    """User registration endpoint"""
     try:
         user = await auth_service.create_user(user_data, db)
         return user
@@ -109,7 +106,6 @@ async def signup(user_data: UserSignup, db: AsyncSession = Depends(get_db)):
 
 @app.post("/auth/signin", response_model=UserResponse)
 async def signin(user_data: UserSignin, db: AsyncSession = Depends(get_db)):
-    """User login endpoint"""
     try:
         user = await auth_service.authenticate_user(user_data, db)
         return user
@@ -126,7 +122,6 @@ async def symptom_check(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    """Submit symptoms for analysis"""
     try:
         # Analyze symptoms using OpenAI
         analysis = await openai_service.analyze_symptoms(symptom_data)
@@ -168,7 +163,6 @@ async def get_symptom_history(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    """Get user's symptom check history"""
     try:
         # Fetch symptom checks from database
         stmt = select(SymptomCheck).where(

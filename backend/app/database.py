@@ -34,7 +34,6 @@ Base = declarative_base()
 metadata = MetaData()
 
 async def create_database_if_not_exists():
-    """Create database if it doesn't exist"""
     try:
         # Create engine without database name
         temp_engine = create_async_engine(
@@ -54,7 +53,6 @@ async def create_database_if_not_exists():
         raise
 
 async def init_db():
-    """Initialize database - create database and tables if they don't exist"""
     try:
         # First, ensure database exists
         await create_database_if_not_exists()
@@ -69,7 +67,6 @@ async def init_db():
         raise
 
 async def get_db():
-    """Dependency to get database session"""
     async with AsyncSessionLocal() as session:
         try:
             yield session
@@ -77,6 +74,5 @@ async def get_db():
             await session.close()
 
 async def close_db():
-    """Close database connections"""
     await engine.dispose()
     logger.info("Database connections closed") 

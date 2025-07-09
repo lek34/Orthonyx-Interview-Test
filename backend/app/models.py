@@ -7,9 +7,9 @@ from sqlalchemy.dialects.mysql import VARCHAR
 from sqlalchemy.orm import relationship
 from .database import Base as SQLAlchemyBase
 
-# ============================================================================
+
 # PYDANTIC MODELS (API Request/Response)
-# ============================================================================
+
 
 class UserSignup(BaseModel):
     email: str = Field(..., description="User email address")
@@ -58,9 +58,8 @@ class ErrorResponse(BaseModel):
 class APIKeyHeader(BaseModel):
     api_key: str = Field(..., description="API key for authentication")
 
-# ============================================================================
+
 # SQLALCHEMY MODELS (Database Tables)
-# ============================================================================
 
 class User(SQLAlchemyBase):
     __tablename__ = "users"

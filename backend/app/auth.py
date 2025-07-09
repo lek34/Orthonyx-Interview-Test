@@ -10,22 +10,18 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 class AuthService:
     @staticmethod
     def hash_password(password: str) -> str:
-        """Hash a password using bcrypt"""
         return pwd_context.hash(password)
 
     @staticmethod
     def verify_password(plain_password: str, hashed_password: str) -> bool:
-        """Verify a password against its hash"""
         return pwd_context.verify(plain_password, hashed_password)
 
     @staticmethod
     def generate_api_key() -> str:
-        """Generate a unique API key"""
         return secrets.token_urlsafe(32)
 
     @staticmethod
     async def create_user(user_data: UserSignup, db: AsyncSession) -> UserResponse:
-        """Create a new user"""
         # Check if user already exists
         stmt = select(User).where(User.email == user_data.email)
         result = await db.execute(stmt)
@@ -59,7 +55,6 @@ class AuthService:
 
     @staticmethod
     async def authenticate_user(user_data: UserSignin, db: AsyncSession) -> UserResponse:
-        """Authenticate a user and return their data"""
         # Find user by email
         stmt = select(User).where(User.email == user_data.email)
         result = await db.execute(stmt)
@@ -81,7 +76,6 @@ class AuthService:
 
     @staticmethod
     async def get_user_by_api_key(api_key: str, db: AsyncSession):
-        """Get user by API key"""
         stmt = select(User).where(User.api_key == api_key)
         result = await db.execute(stmt)
         return result.scalar_one_or_none()
