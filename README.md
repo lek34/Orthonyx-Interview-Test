@@ -71,11 +71,6 @@ pip install -r requirements.txt
    # OpenAI Configuration
    OPENAI_API_KEY=your_openai_api_key_here
 
-   # Security
-   SECRET_KEY=your_secret_key_here
-   ALGORITHM=HS256
-   ACCESS_TOKEN_EXPIRE_MINUTES=30
-
    # Server Configuration
    HOST=127.0.0.1
    PORT=8000
