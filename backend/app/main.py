@@ -70,7 +70,7 @@ async def get_current_user(
     return user
 
 # Health check endpoint
-@app.get("/status")
+@app.get("/status",tags=["System"])
 async def health_check():
     try:
         # Check database connection
@@ -94,7 +94,7 @@ async def health_check():
     }
 
 # Authentication endpoints
-@app.post("/auth/signup", response_model=UserResponse)
+@app.post("/auth/signup", response_model=UserResponse,tags=["Authentication"])
 async def signup(user_data: UserSignup, db: AsyncSession = Depends(get_db)):
     try:
         user = await auth_service.create_user(user_data, db)
@@ -105,7 +105,7 @@ async def signup(user_data: UserSignup, db: AsyncSession = Depends(get_db)):
         logger.error(f"Signup error: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
-@app.post("/auth/signin", response_model=UserResponse)
+@app.post("/auth/signin", response_model=UserResponse,tags=["Authentication"])
 async def signin(user_data: UserSignin, db: AsyncSession = Depends(get_db)):
     try:
         user = await auth_service.authenticate_user(user_data, db)
@@ -117,7 +117,7 @@ async def signin(user_data: UserSignin, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=500, detail="Internal server error")
 
 # Symptom check endpoints
-@app.post("/symptom-check", response_model=SymptomCheckResponse)
+@app.post("/symptom-check", response_model=SymptomCheckResponse,tags=["Symptom"])
 async def symptom_check(
     symptom_data: SymptomCheckRequest,
     current_user: User = Depends(get_current_user),
@@ -159,7 +159,7 @@ async def symptom_check(
         logger.error(f"Symptom check error: {e}")
         raise HTTPException(status_code=500, detail="Failed to process symptom check")
 
-@app.get("/symptom-history", response_model=SymptomHistoryResponse)
+@app.get("/symptom-history", response_model=SymptomHistoryResponse,tags=["Symptom"])
 async def get_symptom_history(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
@@ -202,7 +202,7 @@ async def get_symptom_history(
         raise HTTPException(status_code=500, detail="Failed to retrieve symptom history")
 
 # Root endpoint
-@app.get("/")
+@app.get("/",tags=["Root"])
 async def root():
     """Root endpoint"""
     return {
