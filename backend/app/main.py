@@ -71,7 +71,7 @@ async def get_current_user(
 
 # Health check endpoint
 @app.get("/status",tags=["System"])
-async def health_check():
+async def status():
     try:
         # Check database connection
         async for db in get_db():

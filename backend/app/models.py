@@ -29,10 +29,10 @@ class UserResponse(BaseModel):
     class Config:
         from_attributes = True
 
-class SymptomCheckRequest(BaseModel):
+class   SymptomCheckRequest(BaseModel):
     age: int = Field(..., ge=0, le=120, description="Patient age")
     sex: str = Field(..., description="Patient sex (male/female/other)")
-    symptoms: str = Field(..., min_length=10, description="Description of symptoms")
+    symptoms: str = Field(..., description="Description of symptoms")
     duration: str = Field(..., description="Duration of symptoms")
     severity: int = Field(..., ge=1, le=10, description="Symptom severity (1-10)")
     additional_notes: Optional[str] = Field(None, description="Additional notes")
